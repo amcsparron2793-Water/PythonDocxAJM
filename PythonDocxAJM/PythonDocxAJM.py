@@ -32,38 +32,38 @@ class PythonDocxAJM:
         self.Document = docx.Document()
 
 
-def save(self, path_to_file=None, **kwargs):
-    create_dir = kwargs.get('create_dir', False)
+    def save(self, path_to_file=None, **kwargs):
+        create_dir = kwargs.get('create_dir', False)
 
-    if path_to_file is None:
-        path_to_file = self.file_save_path
-        file_parent_dir = Path(path_to_file).parent
-    else:
-        file_parent_dir = Path(path_to_file).parent
-        if file_parent_dir.is_dir():
-            self._logger.debug(f'Save location {file_parent_dir} detected')
+        if path_to_file is None:
+            path_to_file = self.file_save_path
+            file_parent_dir = Path(path_to_file).parent
         else:
-            if not create_dir:
-                try:
-                    raise NotADirectoryError(f"Folder chosen as save location"
-                                             f" ({Path(path_to_file).parent}) does not exist.")
-                except NotADirectoryError as e:
-                    self._logger.error(e, exc_info=True)
-                    raise e
+            file_parent_dir = Path(path_to_file).parent
+            if file_parent_dir.is_dir():
+                self._logger.debug(f'Save location {file_parent_dir} detected')
             else:
-                self._logger.debug(f'Save location {file_parent_dir} being created...')
-                file_parent_dir.mkdir(exist_ok=True)
+                if not create_dir:
+                    try:
+                        raise NotADirectoryError(f"Folder chosen as save location"
+                                                 f" ({Path(path_to_file).parent}) does not exist.")
+                    except NotADirectoryError as e:
+                        self._logger.error(e, exc_info=True)
+                        raise e
+                else:
+                    self._logger.debug(f'Save location {file_parent_dir} being created...')
+                    file_parent_dir.mkdir(exist_ok=True)
 
-    if path_to_file == self.file_template_path:
-        try:
-            raise _TemplateLockedError('Cannot save over the template, please choose a different filename.')
-        except _TemplateLockedError as e:
-            self._logger.error(e, exc_info=True)
-            raise e
+        if path_to_file == self.file_template_path:
+            try:
+                raise _TemplateLockedError('Cannot save over the template, please choose a different filename.')
+            except _TemplateLockedError as e:
+                self._logger.error(e, exc_info=True)
+                raise e
 
-    self.Document.save(path_to_file)
-    self._logger.info(f'Saved file to {file_parent_dir.resolve()}')
-    return Path(path_to_file).resolve()
+        self.Document.save(path_to_file)
+        self._logger.info(f'Saved file to {file_parent_dir.resolve()}')
+        return Path(path_to_file).resolve()
 
 
 if __name__ == '__main__':
