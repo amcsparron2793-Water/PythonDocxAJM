@@ -6,30 +6,81 @@ My python-docx class
 """
 
 from _version import __version__
-import datetime
-from BetterConfigAJM import BetterConfigAJM as BetterConfig
 from EasyLoggerAJM import EasyLogger
 import docx
 from pathlib import Path
-
+from DocConfig import DocConfig
+from __init__ import __project_name__
 
 class _TemplateLockedError(Exception):
+    """
+    This class is an exception and inherits from the base `Exception` class.
+
+    Attributes:
+        None
+
+    Methods:
+        None
+
+    Exceptions:
+        None
+
+    Note:
+        This class is intended to be used as a custom exception when a template is locked and any modifications to it are attempted.
+
+    Example:
+        None
+
+    """
     ...
 
 
 class PythonDocxAJM:
+    """
+    Class representing a Python library for working with docx files.
+
+    This class provides functionality to create and save docx files using docx templates.
+
+    Attributes:
+        _logger (Logger): The logger object to use for logging.
+        _config (DocConfig): The configuration object to use for retrieving configuration values.
+        file_save_path (str): The path where the docx file will be saved.
+        file_template_path (str): The path to the docx template file.
+
+    Methods:
+        __init__ (self, **kwargs): Initializes a new instance of the PythonDocxAJM class.
+
+            Args:
+                **kwargs: Additional keyword arguments.
+                    logger (Logger): The logger object to use. If not provided, a default logger will be used.
+                    config (DocConfig): The configuration object to use. If not provided, a default configuration will be used.
+                    config_list_dict (dict): A dictionary containing configuration values. If provided, it will override the values retrieved from the configuration object.
+
+        save (self, path_to_file=None, **kwargs): Saves the docx file to the specified location.
+
+            Args:
+                path_to_file (str): The path where the docx file will be saved. If not provided, the value of file_save_path will be used.
+                **kwargs: Additional keyword arguments.
+                    create_dir (bool): Whether to create the directory if it does not exist. Defaults to False.
+
+            Returns:
+                str: The path to the saved docx file.
+    """
     def __init__(self, **kwargs):
-        # TODO: customize logger and config to fit needs
-        self._logger = kwargs.get('logger', EasyLogger(root_log_location='../logs'))
-        self._config = kwargs.get('config', BetterConfig(config_dir='../cfg', config_filename='config.ini',
-                                                         config_list_dict=kwargs.get('config_list_dict',
-                                                                                     [{'DEFAULT': {'test': 'testvalue'}}])))
+        # TODO: customize logger
+        self._logger = kwargs.get('logger', EasyLogger(root_log_location='../logs',
+                                                       project_name=__project_name__))
+        self._config = kwargs.get('config', DocConfig(config_dir='../cfg', config_filename='config.ini',
+                                                      logger=self._logger.logger,
+                                                      config_list_dict=kwargs.get('config_list_dict', None)))
         self._config.GetConfig()
 
-        # TODO: get these into a config file/read from that file
-        self.file_save_path = None
-        self.file_template_path = None
-        self.Document = docx.Document()
+        self.file_save_path = self._config.get('DEFAULT', 'file_save_path')
+        self.file_template_path = self._config.get('DEFAULT', 'file_template_path')
+        if self.file_template_path:
+            self.Document = docx.Document(self.file_template_path)
+        else:
+            self.Document = docx.Document()
 
 
     def save(self, path_to_file=None, **kwargs):
