@@ -5,7 +5,6 @@ My python-docx class
 
 """
 
-from _version import __version__
 from EasyLoggerAJM import EasyLogger
 import docx
 from pathlib import Path
