@@ -12,6 +12,7 @@ setup(
     name=project_name,
     version=get_property('__version__', project_name),
     packages=['PythonDocxAJM'],
+    install_requires=['python-docx'],
     url='https://github.com/amcsparron2793-Water/PythonDocxAJM',
     download_url=f'https://github.com/amcsparron2793-Water/PythonDocxAJM/archive/refs/tags/{get_property("__version__", project_name)}.tar.gz',
     keywords=[],
