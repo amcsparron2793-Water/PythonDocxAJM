@@ -9,7 +9,7 @@ echo pwd changed to %cd%
 REM need LICENSE.txt README.md setup.cfg setup.py - see https://medium.com/@joel.barmettler/how-to-upload-your-python-package-to-pypi-65edc5fe9c56
 REM DONT FORGET TO UPDATE setup.py, push commit to remote, and create a new release!! THEN run this!!!
 echo running sdist setup
-python setup.py sdist
+python -m build
 
 REM You can upload your distributions to TestPyPI using twine by specifying the --repository flag:
 REM twine upload --repository testpypi dist/*
