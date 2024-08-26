@@ -12,6 +12,7 @@ from pathlib import Path
 from DocConfig import DocConfig
 from __init__ import __project_name__
 
+
 class _TemplateLockedError(Exception):
     """
     This class is an exception and inherits from the base `Exception` class.
@@ -81,7 +82,6 @@ class PythonDocxAJM:
             self.Document = docx.Document(self.file_template_path)
         else:
             self.Document = docx.Document()
-
 
     def save(self, path_to_file=None, **kwargs):
         create_dir = kwargs.get('create_dir', False)
