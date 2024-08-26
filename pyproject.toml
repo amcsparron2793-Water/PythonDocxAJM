@@ -4,4 +4,4 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PythonDocxAJM"
-dynamic = ['version']#, 'download_url']
+dynamic = ['authors', 'version']#, 'download_url']
