@@ -10,7 +10,8 @@ from EasyLoggerAJM import EasyLogger
 import docx
 from pathlib import Path
 from DocConfig import DocConfig
-from __init__ import __project_name__
+
+__project_name__ = Path(__file__).parent.name
 
 
 class _TemplateLockedError(Exception):
@@ -68,9 +69,8 @@ class PythonDocxAJM:
                 str: The path to the saved docx file.
     """
     def __init__(self, **kwargs):
-        # TODO: customize logger
         self._logger = kwargs.get('logger', EasyLogger(root_log_location='../logs',
-                                                       project_name=__project_name__))
+                                                       project_name=__project_name__, is_daily_log_spec=True))
         self._config = kwargs.get('config', DocConfig(config_dir='../cfg', config_filename='config.ini',
                                                       logger=self._logger.logger,
                                                       config_list_dict=kwargs.get('config_list_dict', None)))

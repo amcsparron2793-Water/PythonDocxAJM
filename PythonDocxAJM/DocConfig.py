@@ -30,10 +30,16 @@ class DocConfig(BetterConfig):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._handle_config_list_dict(** kwargs)
+        # new value needs to be returned DUH
+        kwargs = self._handle_config_list_dict(**kwargs)
         self.config_list_dict = kwargs.get('config_list_dict', self.DEFAULT_LIST_DICT)
 
-    def _handle_config_list_dict(self, ** kwargs):
+    def _handle_config_list_dict(self, **kwargs):
+        log_str = 'config_list_dict kwarg was none, item was deleted from kwargs.'
         if 'config_list_dict' in kwargs and kwargs['config_list_dict'] is None:
             kwargs.__delitem__('config_list_dict')
-            self._logger.debug('config_list_dict kwarg was none, item was deleted from kwargs.')
+            if hasattr(self, '_logger'):
+                self._logger.debug(log_str)
+            else:
+                print(log_str)
+        return kwargs
