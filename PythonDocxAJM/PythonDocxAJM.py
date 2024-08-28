@@ -8,7 +8,11 @@ My python-docx class
 from EasyLoggerAJM import EasyLogger
 import docx
 from pathlib import Path
-from DocConfig import DocConfig
+# this is so both the PyPi package, and my dev version will import correctly!!!
+try:
+    from PythonDocxAJM.DocConfig import DocConfig
+except (ModuleNotFoundError, ImportError):
+    from DocConfig import DocConfig
 
 __project_name__ = Path(__file__).parent.name
 
