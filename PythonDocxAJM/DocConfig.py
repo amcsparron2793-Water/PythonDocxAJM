@@ -1,3 +1,5 @@
+from typing import List
+
 from BetterConfigAJM import BetterConfigAJM as BetterConfig
 
 
@@ -18,8 +20,8 @@ class DocConfig(BetterConfig):
     config = DocConfig()
     ```
     """
-    DEFAULT_FILE_SAVE_PATH = '../Misc_Project_Files/default_filename.docx'
-    DEFAULT_LIST_DICT = [
+    DEFAULT_FILE_SAVE_PATH: str = '../Misc_Project_Files/default_filename.docx'
+    DEFAULT_LIST_DICT: List[dict] = [
         {
             'DEFAULT': {
                 'file_save_path': DEFAULT_FILE_SAVE_PATH,
@@ -32,9 +34,9 @@ class DocConfig(BetterConfig):
         super().__init__(*args, **kwargs)
         # new value needs to be returned DUH
         kwargs = self._handle_config_list_dict(**kwargs)
-        self.config_list_dict = kwargs.get('config_list_dict', self.DEFAULT_LIST_DICT)
+        self.config_list_dict: List[dict] = kwargs.get('config_list_dict', self.__class__.DEFAULT_LIST_DICT)
 
-    def _handle_config_list_dict(self, **kwargs):
+    def _handle_config_list_dict(self, **kwargs) -> dict:
         log_str = 'config_list_dict kwarg was none, item was deleted from kwargs.'
         if 'config_list_dict' in kwargs and kwargs['config_list_dict'] is None:
             kwargs.__delitem__('config_list_dict')
